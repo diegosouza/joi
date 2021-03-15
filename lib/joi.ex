@@ -3,8 +3,12 @@ defmodule Joi do
   Joi is a data validation library for Elixir.
   """
 
+  alias Joi.Schema
   alias Joi.Type
+  alias Joi.Field.Error
 
+
+  @spec validate(map(), Schema.t()) :: {:ok, map()} | {:error, [Error.t()]}
   def validate(data, schema) do
     data |> Map.put(:joi_errors, []) |> validate_all_fields(schema) |> parse_result()
   end

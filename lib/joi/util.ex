@@ -1,5 +1,7 @@
 defmodule Joi.Util do
-  @types [:boolean, :date, :datetime, :list, :map, :number, :string]
+
+  @types Joi.Type.all()
+
   def error_message(field, message, type) do
     {:error, %{field: field, message: message, type: type, constraint: type}}
   end

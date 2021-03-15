@@ -2,8 +2,18 @@ defmodule Joi.Type do
   @moduledoc false
 
   alias __MODULE__
+  alias Joi.Field
+  alias Joi.Field.Error
+  alias Joi.Field.Options
   alias Joi.Validator.Custom
 
+  @type t :: :boolean | :date | :datetime | :list | :map | :number | :string
+
+  @all [:boolean, :date, :datetime, :list, :map, :number, :string]
+
+  def all(), do: @all
+
+  @spec validate(Type.t(), Field.t(), map(), Options.t()) :: {:ok, map()} | {:error, [Error.t()]}
   def validate(type, field, data, options) do
     custom_function_list = options |> Keyword.take([:f])
     options = options |> Keyword.drop([:f])
@@ -16,7 +26,6 @@ defmodule Joi.Type do
       type == :datetime -> Type.DateTime.validate_field(field, data, options)
       type == :date -> Type.Date.validate_field(field, data, options)
       type == :map -> Type.Map.validate_field(field, data, options)
-      type -> {:error, "unknown type: #{type}"}
     end
     |> custom_validate(field, custom_function_list, options)
   end
